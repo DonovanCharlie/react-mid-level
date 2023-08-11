@@ -32,7 +32,7 @@ export default function FavoritesFilms() {
         <div className='film-list'>
           {favorites.map((e) => {
               return (
-                <FilmCard key={e.id} filmData={e} />
+                <FilmCard key={e.id} filmData={e} type="favorites" />
               )
             })
           }

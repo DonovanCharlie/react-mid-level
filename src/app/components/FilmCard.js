@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 
 import { NotificationContext } from './NotificationContext';
 
-const FilmCard = ({ filmData }) => {
+const FilmCard = ({ filmData, type }) => {
    
 const { addToFavorites, removeToFavorites, isFavorite, filterByCategory } = useContext(NotificationContext);
 
@@ -22,8 +22,8 @@ const { addToFavorites, removeToFavorites, isFavorite, filterByCategory } = useC
             <div className='genres'>
                {filmData.genres.map((category) => {
                   return (
-                     <span onClick={() => filterByCategory(category)}>
-                     {category}
+                     <span onClick={() => type === "favorites" ? "" : filterByCategory(category)}>
+                        {category}
                      </span>
                   )
                })
