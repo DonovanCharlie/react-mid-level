@@ -44,6 +44,21 @@ export default function RootLayout({ children }) {
     setNotificationsCounter(notificationsCounter + 1)
 
   }
+  //-------- defining the filter notification --------------
+  const filterNotification = () => {
+    
+    var tempNotifications = notifications;
+    const id = notifications.length ? notifications.length + 1 : 0;
+    const message = {
+      "id":id,
+      "type": "warning",
+      "message":"You must remove the active filter"
+    }
+    tempNotifications.push(message);
+    setNotifications(tempNotifications);
+    setNotificationsCounter(notificationsCounter + 1)
+
+  }
   //-------- defining the remove notification --------------
   const warning = () => {
     var tempNotifications = notifications;
@@ -126,6 +141,11 @@ export default function RootLayout({ children }) {
   //-------- category filter ------------
   
   const filterByCategory = (cat) => {
+    
+    if (filter) {
+      filterNotification();
+      return
+    } 
     
     const results = filmList.filter(film => {
       return film.genres.includes(cat);

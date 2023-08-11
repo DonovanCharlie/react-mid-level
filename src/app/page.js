@@ -14,7 +14,7 @@ export default function Home() {
   
   const router = useRouter();
 
-  const { refreshFilmList, filmList, setFilmLilst, setFilter, filter,setRefreshFilmList } = useContext(NotificationContext);
+  const { refreshFilmList, filmList, setFilmLilst, filterByCategory, setFilter, filter, setRefreshFilmList } = useContext(NotificationContext);
   
   useEffect(() => {
     
@@ -27,13 +27,20 @@ export default function Home() {
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10dGxpb2l0aW1wZXV6bHdzZ3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTE0MjM3MDAsImV4cCI6MjAwNjk5OTcwMH0.yEpNXeO-cwzp_tBNeITxr2RRytwbcVnMlarJs0cpNYY",
           },
         }).then((t) => t.json());
-        setFilmLilst(res);
+        if (filter) {
+          const results = res.filter(film => {
+            return film.genres.includes(filter);
+          });
+          setFilmLilst(results);
+        } else {
+          setFilmLilst(res);
+        }
       })();
     } catch (error) {
       console.log(error)
     }
     
-  }, [refreshFilmList])
+  }, [refreshFilmList, rows])
   
   const resetFilter = () => {
     setRefreshFilmList(refreshFilmList + 1);
@@ -77,6 +84,12 @@ export default function Home() {
           }
         </div>
         {/* ---------- film list ----------  */}
+      
+        {/* ---------- load more ----------  */}
+      
+        <div className='button flex gap-5 align-center mb-20' onClick={() => setRows(rows + 20)}>
+          <div>+ Load More</div>
+        </div>
       </>
   )
 }
