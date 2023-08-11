@@ -1,95 +1,82 @@
-import Image from 'next/image'
-import styles from './page.module.css'
+"use client";
+
+import { useContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+
+import { NotificationContext } from './components/NotificationContext';
+import FilmCard from './components/FilmCard';
+import styles from './style.scss'
 
 export default function Home() {
+  
+  const [rows, setRows] = useState(20);
+  const [page, setPage] = useState(0);
+  
+  const router = useRouter();
+
+  const { refreshFilmList, filmList, setFilmLilst, setFilter, filter,setRefreshFilmList } = useContext(NotificationContext);
+  
+  useEffect(() => {
+    
+    try {
+      (async ()=>{
+        const res = await fetch(`https://mttlioitimpeuzlwsgql.supabase.co/rest/v1/movies?limit=${rows}`, {
+          method: "GET",
+          headers: {
+          apiKey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10dGxpb2l0aW1wZXV6bHdzZ3FsIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTE0MjM3MDAsImV4cCI6MjAwNjk5OTcwMH0.yEpNXeO-cwzp_tBNeITxr2RRytwbcVnMlarJs0cpNYY",
+          },
+        }).then((t) => t.json());
+        setFilmLilst(res);
+      })();
+    } catch (error) {
+      console.log(error)
+    }
+    
+  }, [refreshFilmList])
+  
+  const resetFilter = () => {
+    setRefreshFilmList(refreshFilmList + 1);
+    setFilter("");
+  }
+  
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+      <>
+        {/* ---------- page header ----------  */}
+      <div className='header flex column space-between align-center w-100 p-10'>
+          <div className='flex space-between align-center w-100'>
+            <div className='page-title bold'>
+              MOVIES
+            </div>
+            <div className='button flex gap-5 align-center' onClick={() => router.push("/favorites-film")}>
+              <div>Favorites</div>
+              <div className='icon h-100 flex align-center'>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z"/></svg>
+              </div>
+            </div>
+          </div>
+      
+          {/* ---------- filter active ----------  */}
+          {filter &&
+            <div className='filter-active genres w-100'>
+              Filtro attivo: <span onClick={resetFilter}>X {filter}</span>
+            </div>
+          }
+        
+        
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+        {/* ---------- page header ----------  */}
+      
+        {/* ---------- film list ----------  */}
+        <div className='film-list'>
+          {filmList.map((e) => {
+              return (
+                <FilmCard key={e.id} filmData={e} />
+              )
+            })
+          }
+        </div>
+        {/* ---------- film list ----------  */}
+      </>
   )
 }

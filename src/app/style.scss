@@ -1,0 +1,279 @@
+$primary: #b1bec5;
+$neutral:#f7fafc;
+$secondary: #fbfbfb;
+$light-grey: #adadad;
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+background-color: $neutral;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+* {
+box-sizing: border-box;
+}
+.p-0{
+  padding: 0px;
+}
+.p-5{
+  padding: 5px;
+}
+.p-10{
+  padding: 10px;
+}
+.p-15{
+   padding: 15px;
+}
+.p-25{
+   padding: 25px;
+}
+.p-15{
+   padding: 15px;
+}
+.w-100{
+   width: 100%;
+}
+.flex{
+   display: flex;
+}
+.column{
+   flex-direction: column;
+}
+.align-center{
+   align-items: center;
+}
+.space-between{
+   justify-content: space-between;
+}
+.space-around{
+  justify-content: space-around;
+}
+.justify-center{
+  justify-content: center;
+}
+.h-100{
+  height: 100%;
+}
+.color-primary{
+color: $primary;
+}
+.color-white{
+  color: #fff;
+}
+.bold{
+  font-weight: bold;
+}
+.text-md{
+  font-size: 50px;
+  font-weight:700;
+}
+.text-xl{
+  font-size: 70px;
+  font-weight:700;
+}
+.text-center{
+  text-align: center;
+}
+.text-right{
+  text-align: right;
+}
+//fine css tecnico
+
+//inizio css dedicato ai componenti
+.main-layout{
+   max-width: 800px;
+   padding-top: 50px;
+}
+.notifications-list {
+   flex-direction: column;
+   z-index: 100000;
+   position: fixed;
+   display: flex;
+   height: auto;
+   right: 20px;
+   top: 10px;
+   gap: 10px;
+
+   .notification {
+      animation: slideInLeft .5s forwards;
+      border-radius: 10px;
+      position: relative;
+      font-weight: 500;
+      font-size: 20px;
+      padding: 20px;
+      color: #fff;
+
+      .close-notification{
+         position: absolute;
+         top: 10px;
+         right: 10px;
+         cursor: pointer;
+         font-size: 14px;
+      }
+
+      &.success{
+         background: #337230;
+         border-color: #0d4800;
+      }
+      &.warning{
+         background: #ca5100;
+         border-color: #480c00;
+      }
+   }
+
+
+}
+
+//header
+.header{
+   backdrop-filter: blur(6px);
+   background: rgb(247 250 252 / 10%);
+   padding: 10px 20px;
+   position: sticky;
+   flex-wrap: wrap;
+   z-index: 1000;
+   top: 0;
+}
+.page-title{
+   font-size: 60px;
+}
+.button{
+   background:$primary;
+   text-align: center;
+   border-radius: 5px;
+   padding: 5px 40px;
+   font-weight: 500;
+   font-size: 20px;
+   cursor: pointer;
+   transition: .2s;
+   color: #fff;
+   gap: 5px;
+
+   &:hover{
+      background-color: #fff;
+      color: $primary;
+      svg path{
+         fill: $primary !important;
+      }
+   }
+
+   .icon svg{
+      width: 15px;
+      path{
+         fill: #fff;
+      }
+   }
+   .icon.reverse{
+      transform: rotate(180deg);
+   }
+}
+
+//film list
+.film-list {
+   flex-direction: column;
+   margin: 20px 0px;
+   display: flex;
+   gap: 20px;
+   padding: 0px 30px;
+}
+
+.card{
+   gap:10px;
+   box-shadow: 6px 0 0 0 $primary;
+   background-color: #fff;
+   border-radius: 9px;
+   position: relative;
+
+   .star{
+      position: absolute;
+      cursor: pointer;
+      right: 15px;
+      top: 15px;
+      width: 30px;
+
+      path{
+         fill:$primary;
+         transition:.2s;
+      }
+
+      &:hover path, &.active path{
+       fill:#fedd00 !important;
+      }
+   }
+
+   .film-img-wrapper{
+      background: no-repeat center url("/placeholder.png");
+      background-size: cover;
+      border-radius: 15px;
+      overflow: hidden;
+      aspect-ratio: 1;
+      min-width: 200px;
+
+      .film-img {
+         background: no-repeat center;
+         background-size: cover;
+         width: 100%;
+         height: 100%;
+      }
+   }
+
+   .film-data{
+      padding: 20px;
+      gap: 5px;
+
+      .title{
+         font-size: 25px;
+         font-weight: 500;
+      }
+
+      .actors {
+         font-size: 15px;
+         font-weight: 500;
+         opacity: .5;
+      }
+
+   }
+}
+
+
+.genres{
+   display: flex;
+   gap: 5px;
+   span{
+      font-size:12px;
+      background-color:$primary;
+      padding: 5px;
+      border-radius: 5px;
+      color: #fff;
+      font-weight: 500;
+      cursor: pointer;
+   }
+}
+
+//responsive
+@media screen and (max-width: 600px) {
+  .page-title {
+   font-size: 30px;
+  }
+  .card {
+   flex-direction: column;
+   box-shadow: 0px 5px 0 0 #b1bec5;
+  }
+}
+
+@keyframes slideInLeft {
+   0% {
+    transform: translateX(900px);
+   }  
+   100% {
+      transform: translateX(0);
+   }
+}
